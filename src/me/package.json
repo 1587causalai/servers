@@ -1,0 +1,53 @@
+{
+  "name": "@1587causalai/me-server",
+  "version": "0.1.0",
+  "description": "一个专为开发者设计的 MCP 服务器，旨在将个人核心知识文档（简历、认知内核、项目概览）集成到 AI 辅助开发环境中。",
+  "license": "MIT",
+  "author": "1587causalai",
+  "homepage": "https://github.com/1587causalai/servers/tree/main/src/me#readme",
+  "bugs": {
+    "url": "https://github.com/1587causalai/servers/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1587causalai/servers.git",
+    "directory": "src/me"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "personal-knowledge-base",
+    "developer-assistant",
+    "resume",
+    "cognitive-core",
+    "project-summary",
+    "me-server"
+  ],
+  "type": "module",
+  "bin": {
+    "me-server": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "0.5.0",
+    "diff": "^5.1.0",
+    "glob": "^10.3.10",
+    "minimatch": "^10.0.1",
+    "zod-to-json-schema": "^3.23.5"
+  },
+  "devDependencies": {
+    "@types/diff": "^5.0.9",
+    "@types/minimatch": "^5.1.2",
+    "@types/node": "^22",
+    "shx": "^0.3.4",
+    "typescript": "^5.3.3"
+  }
+}
