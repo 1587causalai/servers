@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/gongqian/DailyLog"
+      ],
+      "timeout": 60,
+      "disabled": false
+    },
+    "personal_docs_mvp_fs": {
+      "command": "npx",
+      "args": [
+        "ts-node",
+        "/Users/gongqian/DailyLog/projects/servers/src/filesystem/index.ts",
+        "/Users/gongqian/DailyLog/projects/personal-docs-mcp-server/MyPersonalDocsMVP"
+      ]
+    }
+  }
+} 

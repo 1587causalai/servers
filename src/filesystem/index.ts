@@ -15,10 +15,21 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { diffLines, createTwoFilesPatch } from 'diff';
 import { minimatch } from 'minimatch';
 
-// Command line argument parsing
+// Read the target directory from command line arguments or use CWD as default
 const args = process.argv.slice(2);
+let configuredRootPath: string;
+
 if (args.length === 0) {
-  console.error("Usage: mcp-server-filesystem <allowed-directory> [additional-directories...]");
+  // No arguments provided, default to current working directory
+  configuredRootPath = process.cwd();
+  console.warn(`No directory path provided. Defaulting to current working directory: ${configuredRootPath}`);
+} else if (args.length === 1) {
+  // One argument provided, use it as the directory path
+  configuredRootPath = args[0];
+} else {
+  // More than one argument provided, which is an error
+  console.error("Usage: custom-mcp-filesystem-server [<allowed-directory>]");
+  console.error("Error: Please provide at most one directory path as an argument.");
   process.exit(1);
 }
 
@@ -35,14 +46,14 @@ function expandHome(filepath: string): string {
 }
 
 // Store allowed directories in normalized form
-const allowedDirectories = args.map(dir =>
-  normalizePath(path.resolve(expandHome(dir)))
-);
+const allowedDirectories = [
+  normalizePath(path.resolve(expandHome(configuredRootPath)))
+];
 
-// Validate that all directories exist and are accessible
-await Promise.all(args.map(async (dir) => {
+// Validate that the configured directory exists and is accessible
+await Promise.all(allowedDirectories.map(async (dir) => {
   try {
-    const stats = await fs.stat(expandHome(dir));
+    const stats = await fs.stat(dir);
     if (!stats.isDirectory()) {
       console.error(`Error: ${dir} is not a directory`);
       process.exit(1);
@@ -58,7 +69,7 @@ async function validatePath(requestedPath: string): Promise<string> {
   const expandedPath = expandHome(requestedPath);
   const absolute = path.isAbsolute(expandedPath)
     ? path.resolve(expandedPath)
-    : path.resolve(process.cwd(), expandedPath);
+    : path.resolve(allowedDirectories[0], expandedPath);
 
   const normalizedRequested = normalizePath(absolute);
 
@@ -162,8 +173,8 @@ interface FileInfo {
 // Server setup
 const server = new Server(
   {
-    name: "secure-filesystem-server",
-    version: "0.2.0",
+    name: "configurable-personal-fs-server",
+    version: "0.3.0",
   },
   {
     capabilities: {
@@ -332,103 +343,73 @@ async function applyFileEdits(
 
 // Tool handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => {
+  const dynamicBasePath = allowedDirectories[0];
   return {
     tools: [
       {
         name: "read_file",
         description:
-          "Read the complete contents of a file from the file system. " +
-          "Handles various text encodings and provides detailed error messages " +
-          "if the file cannot be read. Use this tool when you need to examine " +
-          "the contents of a single file. Only works within allowed directories.",
+          `【个人文档专用】读取此个人文档 (${dynamicBasePath}) 内的指定文件。请提供相对于此文档根目录的文件路径 (例如 'MyNotes/todo.txt') 或仅文件名 (例如 'README.md'，将在根目录下查找)。所有文件读取均严格限制在此个人文档目录内。`,
         inputSchema: zodToJsonSchema(ReadFileArgsSchema) as ToolInput,
       },
       {
         name: "read_multiple_files",
         description:
-          "Read the contents of multiple files simultaneously. This is more " +
-          "efficient than reading files one by one when you need to analyze " +
-          "or compare multiple files. Each file's content is returned with its " +
-          "path as a reference. Failed reads for individual files won't stop " +
-          "the entire operation. Only works within allowed directories.",
+          `【个人文档专用】同时读取此个人文档 (${dynamicBasePath}) 内的多个指定文件。请提供文件路径列表，路径规则同 'read_file' 工具。所有文件必须位于此个人文档目录内。`,
         inputSchema: zodToJsonSchema(ReadMultipleFilesArgsSchema) as ToolInput,
       },
       {
         name: "write_file",
         description:
-          "Create a new file or completely overwrite an existing file with new content. " +
-          "Use with caution as it will overwrite existing files without warning. " +
-          "Handles text content with proper encoding. Only works within allowed directories.",
+          `【个人文档专用】在此个人文档 (${dynamicBasePath}) 内创建新文件或覆写现有文件。请提供相对于此文档根目录的文件路径及内容。操作严格限定在此目录内，请谨慎覆写。`,
         inputSchema: zodToJsonSchema(WriteFileArgsSchema) as ToolInput,
       },
       {
         name: "edit_file",
         description:
-          "Make line-based edits to a text file. Each edit replaces exact line sequences " +
-          "with new content. Returns a git-style diff showing the changes made. " +
-          "Only works within allowed directories.",
+          `【个人文档专用】对此个人文档 (${dynamicBasePath}) 内的指定文本文件进行基于行的编辑。请提供相对于此文档根目录的文件路径及编辑操作。文件操作严格限定在此目录内。`,
         inputSchema: zodToJsonSchema(EditFileArgsSchema) as ToolInput,
       },
       {
         name: "create_directory",
         description:
-          "Create a new directory or ensure a directory exists. Can create multiple " +
-          "nested directories in one operation. If the directory already exists, " +
-          "this operation will succeed silently. Perfect for setting up directory " +
-          "structures for projects or ensuring required paths exist. Only works within allowed directories.",
+          `【个人文档专用】在此个人文档 (${dynamicBasePath}) 内创建新目录（可递归创建）。请提供相对于此文档根目录的目录路径。所有操作均严格限定在此目录内进行。`,
         inputSchema: zodToJsonSchema(CreateDirectoryArgsSchema) as ToolInput,
       },
       {
         name: "list_directory",
         description:
-          "Get a detailed listing of all files and directories in a specified path. " +
-          "Results clearly distinguish between files and directories with [FILE] and [DIR] " +
-          "prefixes. This tool is essential for understanding directory structure and " +
-          "finding specific files within a directory. Only works within allowed directories.",
+          `【个人文档专用】列出此个人文档 (${dynamicBasePath}) 内指定子路径下的文件和目录。如果未提供具体子路径或提供的是根目录标识（如'.'），则默认列出个人文档根目录 (${dynamicBasePath}) 的内容。所有路径操作均以此个人文档目录为基准。`,
         inputSchema: zodToJsonSchema(ListDirectoryArgsSchema) as ToolInput,
       },
       {
         name: "directory_tree",
         description:
-            "Get a recursive tree view of files and directories as a JSON structure. " +
-            "Each entry includes 'name', 'type' (file/directory), and 'children' for directories. " +
-            "Files have no children array, while directories always have a children array (which may be empty). " +
-            "The output is formatted with 2-space indentation for readability. Only works within allowed directories.",
+            `【个人文档专用】获取此个人文档 (${dynamicBasePath}) 内指定子路径下文件和目录的递归树状JSON视图。如果未提供具体子路径，则默认展示个人文档根目录 (${dynamicBasePath}) 的结构。路径操作以此个人文档目录为基准。`,
         inputSchema: zodToJsonSchema(DirectoryTreeArgsSchema) as ToolInput,
       },
       {
         name: "move_file",
         description:
-          "Move or rename files and directories. Can move files between directories " +
-          "and rename them in a single operation. If the destination exists, the " +
-          "operation will fail. Works across different directories and can be used " +
-          "for simple renaming within the same directory. Both source and destination must be within allowed directories.",
+          `【个人文档专用】在此个人文档 (${dynamicBasePath}) 内移动或重命名文件和目录。源和目标路径均须为相对于此文档根目录的路径，且操作不能超出此目录范围。`,
         inputSchema: zodToJsonSchema(MoveFileArgsSchema) as ToolInput,
       },
       {
         name: "search_files",
         description:
-          "Recursively search for files and directories matching a pattern. " +
-          "Searches through all subdirectories from the starting path. The search " +
-          "is case-insensitive and matches partial names. Returns full paths to all " +
-          "matching items. Great for finding files when you don't know their exact location. " +
-          "Only searches within allowed directories.",
+          `【个人文档专用】在此个人文档 (${dynamicBasePath}) 内递归搜索文件和目录。搜索将在指定的起始子路径（相对于文档根目录）下进行；如果未指定起始子路径，则从文档根目录开始。可提供搜索模式和排除模式。`,
         inputSchema: zodToJsonSchema(SearchFilesArgsSchema) as ToolInput,
       },
       {
         name: "get_file_info",
         description:
-          "Retrieve detailed metadata about a file or directory. Returns comprehensive " +
-          "information including size, creation time, last modified time, permissions, " +
-          "and type. This tool is perfect for understanding file characteristics " +
-          "without reading the actual content. Only works within allowed directories.",
+          `【个人文档专用】获取此个人文档 (${dynamicBasePath}) 内指定文件或目录的元数据。请提供相对于此文档根目录的路径。目标必须位于此个人文档目录内。`,
         inputSchema: zodToJsonSchema(GetFileInfoArgsSchema) as ToolInput,
       },
       {
         name: "list_allowed_directories",
         description:
-          "Returns the list of directories that this server is allowed to access. " +
-          "Use this to understand which directories are available before trying to access files.",
+          `返回此【个人文档专用】服务器当前唯一配置允许操作的根目录: ${dynamicBasePath}。用于确认服务器的固定操作范围和基准路径。`,
         inputSchema: {
           type: "object",
           properties: {},
@@ -637,8 +618,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Secure MCP Filesystem Server running on stdio");
-  console.error("Allowed directories:", allowedDirectories);
+  console.error("Configurable Personal Filesystem MCP Server running on stdio");
+  console.error("Serving directory:", allowedDirectories[0]);
 }
 
 runServer().catch((error) => {
