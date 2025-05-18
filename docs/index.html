@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My MCP Development Journey</title>
+  <title>ME MCP Server</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Documentation of learning and customizing MCP servers.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -12,16 +12,27 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: 'MCP Dev Journey',
-      repo: '', // 你可以填写你的 GitHub 仓库地址
+      name: 'ME MCP Server',
+      repo: 'https://github.com/yourusername/yourrepository', // 请替换为你的 GitHub 仓库地址
       loadSidebar: true, // 加载侧边栏
       subMaxLevel: 2, // 侧边栏目录最大深度
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md' // 在每个子目录中共享同一个侧边栏
+      },
+      search: {
+        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        paths: 'auto', // `auto` 代表自动检测所有路径
+        placeholder: '搜索文档',
+        noData: '找不到结果!',
+        // 搜索标题的最大层级, 1 - 6
+        depth: 2,
+        hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
       }
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- 搜索插件 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html> 
