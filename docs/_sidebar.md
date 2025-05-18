@@ -11,6 +11,6 @@
   - [MCP 工作原理详解](mcp_how_it_works.md)
   - <!-- 其他理论知识点 -->
 
-- **第三部分：开发 Personal Docs MCP Server**
+- **第三部分：开发 me-server MCP**
   - [背景与需求分析](personal_knowledge_base_mcp_server_requirements.md)
   - [开发日志](me_server_development_log.md)
