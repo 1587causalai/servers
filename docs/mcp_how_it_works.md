@@ -63,7 +63,7 @@ AI 模型选定工具后：
 
 ## 4. 我们的定制实践：动态上下文与智能交互
 
-在我们的学习与定制之旅中 (详见 [V1](my_first_customization.md), [V2](flexible_directory_config.md), [V3](V3_发布npm包.md) 和 [最终成果总结](我的定制文件服务器成果.md))，我们将官方的 Filesystem MCP Server 发展为了一个名为 `[@1587causalai/configurable-personal-fs-server](https://www.npmjs.com/package/@1587causalai/configurable-personal-fs-server)` 的 npm 包。这个过程很好地演示了 MCP 的核心交互原理：
+在我们的学习与定制之旅中 (详见 [V1](my_first_customization.md), [V2](flexible_directory_config.md), [V3](V3_发布npm包.md) 和 [最终成果总结](configurable_fs_server_summary.md))，我们将官方的 Filesystem MCP Server 发展为了一个名为 `[@1587causalai/configurable-personal-fs-server](https://www.npmjs.com/package/@1587causalai/configurable-personal-fs-server)` 的 npm 包。这个过程很好地演示了 MCP 的核心交互原理：
 
 1.  **客户端传递配置给服务器**：
     当用户在 MCP 客户端（如 Cursor）中配置此服务器时，可以在 `args` 数组中提供一个路径参数：
