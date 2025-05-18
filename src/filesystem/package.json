@@ -1,14 +1,29 @@
 {
-  "name": "@modelcontextprotocol/server-filesystem",
-  "version": "0.6.2",
-  "description": "MCP server for filesystem access",
+  "name": "@1587causalai/configurable-personal-fs-server",
+  "version": "0.1.1",
+  "description": "一个高度可配置的个人文件系统MCP服务器，具有上下文感知AI交互能力。允许通过命令行参数动态配置根目录，或默认为当前工作目录。",
   "license": "MIT",
-  "author": "Anthropic, PBC (https://anthropic.com)",
-  "homepage": "https://modelcontextprotocol.io",
-  "bugs": "https://github.com/modelcontextprotocol/servers/issues",
+  "author": "1587causalai",
+  "homepage": "https://github.com/1587causalai/servers/tree/main/src/filesystem#readme",
+  "bugs": {
+    "url": "https://github.com/1587causalai/servers/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1587causalai/servers.git",
+    "directory": "src/filesystem"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "personal-documents",
+    "filesystem",
+    "configurable-server"
+  ],
   "type": "module",
   "bin": {
-    "mcp-server-filesystem": "dist/index.js"
+    "configurable-personal-fs-server": "dist/index.js"
   },
   "files": [
     "dist"
