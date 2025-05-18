@@ -1,5 +1,23 @@
 # Model Context Protocol servers
 
+This repository is a fork of the official [Model Context Protocol servers](https://github.com/modelcontextprotocol/servers). It serves as a collection of *reference implementations* for the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP), and additionally documents a learning and customization journey.
+
+## 🚀 My Customization Journey
+
+Beyond the standard reference servers, this fork includes a step-by-step guide violência the customization of the Filesystem MCP server. The goal was to create a more personalized and context-aware server for document management, culminating in the npm package `[@1587causalai/configurable-personal-fs-server](https://www.npmjs.com/package/@1587causalai/configurable-personal-fs-server)`.
+
+The detailed development process, including design decisions, code modifications, and troubleshooting, is documented here:
+**[My MCP Customization Journey & Docs](https://1587causalai.github.io/servers/)**
+
+This documentation covers:
+-   (V1) Initial hardcoding of an allowed directory.
+-   (V2) Implementing flexible directory configuration and enhancing AI interaction through improved tool descriptions.
+-   (V3) Packaging the customized server as an npm package and resolving deployment issues.
+
+This journey showcases a practical example of extending MCP functionalities for personal use.
+
+---
+
 This repository is a collection of *reference implementations* for the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP), as well as references
 to community built servers and additional resources.
 
@@ -49,7 +67,7 @@ Official integrations are maintained by companies building production ready MCP 
 - <img height="12" width="12" src="https://github.com/aliyun/alibaba-cloud-ops-mcp-server/blob/master/image/alibaba-cloud.png" alt="Alibaba Cloud OPS Logo" /> **[Alibaba Cloud OPS](https://github.com/aliyun/alibaba-cloud-ops-mcp-server)** - Manage the lifecycle of your Alibaba Cloud resources with [CloudOps Orchestration Service](https://www.alibabacloud.com/en/product/oos) and Alibaba Cloud OpenAPI.  
 - <img height="12" width="12" src="https://iotdb.apache.org/img/logo.svg" alt="Apache IoTDB Logo" /> **[Apache IoTDB](https://github.com/apache/iotdb-mcp-server)** - MCP Server for [Apache IoTDB](https://github.com/apache/iotdb) database and its tools
 - <img height="12" width="12" src="https://apify.com/favicon.ico" alt="Apify Logo" /> **[Apify](https://github.com/apify/actors-mcp-server)** - [Actors MCP Server](https://apify.com/apify/actors-mcp-server): Use 3,000+ pre-built cloud tools to extract data from websites, e-commerce, social media, search engines, maps, and more
-- <img height="12" width="12" src="https://2052727.fs1.hubspotusercontent-na1.net/hubfs/2052727/cropped-cropped-apimaticio-favicon-1-32x32.png" alt="APIMatic Logo" /> **[APIMatic MCP](https://github.com/apimatic/apimatic-validator-mcp)** - APIMatic MCP Server is used to validate OpenAPI specifications using [APIMatic](https://www.apimatic.io/). The server processes OpenAPI files and returns validation summaries by leveraging APIMatic’s API.
+- <img height="12" width="12" src="https://2052727.fs1.hubspotusercontent-na1.net/hubfs/2052727/cropped-cropped-apimaticio-favicon-1-32x32.png" alt="APIMatic Logo" /> **[APIMatic MCP](https://github.com/apimatic/apimatic-validator-mcp)** - APIMatic MCP Server is used to validate OpenAPI specifications using [APIMatic](https://www.apimatic.io/). The server processes OpenAPI files and returns validation summaries by leveraging APIMatic's API.
 - <img height="12" width="12" src="https://phoenix.arize.com/wp-content/uploads/2023/04/cropped-Favicon-32x32.png" alt="Arize-Phoenix Logo" /> **[Arize Phoenix](https://github.com/Arize-ai/phoenix/tree/main/js/packages/phoenix-mcp)** - Inspect traces, manage prompts, curate datasets, and run experiments using [Arize Phoenix](https://github.com/Arize-ai/phoenix), an open-source AI and LLM observability tool.
 - <img height="12" width="12" src="https://www.datastax.com/favicon-32x32.png" alt="DataStax logo" /> **[Astra DB](https://github.com/datastax/astra-db-mcp)** - Comprehensive tools for managing collections and documents in a [DataStax Astra DB](https://www.datastax.com/products/datastax-astra) NoSQL database with a full range of operations such as create, update, delete, find, and associated bulk actions.
 - <img height="12" width="12" src="https://assets.atlan.com/assets/atlan-a-logo-blue-background.png" alt="Atlan Logo" /> **[Atlan](https://github.com/atlanhq/agent-toolkit/tree/main/modelcontextprotocol)** - The Atlan Model Context Protocol server allows you to interact with the [Atlan](https://www.atlan.com/) services through multiple tools.
@@ -384,7 +402,7 @@ A growing set of community-developed and maintained servers demonstrates various
 - **[MySQL](https://github.com/designcomputer/mysql_mcp_server)** (by DesignComputer) - MySQL database integration in Python with configurable access controls and schema inspection
 - **[n8n](https://github.com/leonardsellem/n8n-mcp-server)** - This MCP server provides tools and resources for AI assistants to manage n8n workflows and executions, including listing, creating, updating, and deleting workflows, as well as monitoring their execution status.
 - **[NASA](https://github.com/ProgramComputer/NASA-MCP-server)** (by ProgramComputer) - Access to a unified gateway of NASA's data sources including but not limited to APOD, NEO, EPIC, GIBS.
-- **[Nasdaq Data Link](https://github.com/stefanoamorelli/nasdaq-data-link-mcp)** (by stefanoamorelli) - An MCP server to access, explore, and interact with Nasdaq Data Link’s extensive and valuable financial and economic datasets.
+- **[Nasdaq Data Link](https://github.com/stefanoamorelli/nasdaq-data-link-mcp)** (by stefanoamorelli) - An MCP server to access, explore, and interact with Nasdaq Data Link's extensive and valuable financial and economic datasets.
 - **[National Parks](https://github.com/KyrieTangSheng/mcp-server-nationalparks)** - The server provides latest information of park details, alerts, visitor centers, campgrounds, hiking trails, and events for U.S. National Parks.
 - **[NAVER](https://github.com/pfldy2850/py-mcp-naver)** (by pfldy2850) - This MCP server provides tools to interact with various Naver services, such as searching blogs, news, books, and more.
 - **[NBA](https://github.com/Taidgh-Robinson/nba-mcp-server)** - This MCP server provides tools to fetch recent and historical NBA games including basic and advanced statistics.
