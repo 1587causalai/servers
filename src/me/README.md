@@ -14,7 +14,7 @@ ME Server 是一个专为开发者设计的模型上下文协议 (MCP) 服务器
 ## 主要特性
 
 *   **专注核心文档访问：**
-    *   提供对三个核心 Markdown 文档的只读访问：
+    *   提供对三个核心 Markdown 文档的读取与更新访问：
         1.  `resume.md` (个人简历)
         2.  `cognitive_core.md` (认知内核)
         3.  `projects_overview.md` (GitHub 项目概览)
